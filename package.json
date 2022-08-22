@@ -6,6 +6,7 @@
   "author": "Christoffer Artmann",
   "license": "MIT",
   "private": true,
+  "bin": "./dist/src/cli.js",
   "scripts": {
     "build": "tsc",
     "cli": "ts-node src/cli.ts",
