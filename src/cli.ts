@@ -12,8 +12,9 @@ async function main() {
       $ lighthouse-report <url>
 
     Options
-      --debug   Output debug information.
-      --head    Run in headed mode.
+      --debug        Output debug information.
+      --head         Run in headed mode.
+      --number, -n   Number of tests to run. Defaults to 3.
 
     Examples
       $ lighthouse-report https://www.google.com/
@@ -26,9 +27,14 @@ async function main() {
       },
       head: {
         type: 'boolean'
+      },
+      number: {
+        alias: 'n',
+        type: 'number'
       }
     }
   })
+  console.log(cli.flags)
 
   const [ url ] = cli.input
 
@@ -38,6 +44,8 @@ async function main() {
     process.exit(1)
   }
 
+  const numberOfTests = cli.flags.number ?? 3
+
   console.log(
     chalk.bold(`Running lighthouse tests for ${ url }. \n`)
   )
@@ -46,11 +54,11 @@ async function main() {
     clearOnComplete: true
   }, Presets.shades_classic)
 
-  bar.start(3, 0)
+  bar.start(numberOfTests, 0)
 
   const result = await runLighthouseTests(url, {
     isDebugMode: cli.flags.debug ?? false,
-    numberOfTests: 3,
+    numberOfTests,
     runHeadless: !cli.flags.head,
 
     onTestCompleted: () => {
