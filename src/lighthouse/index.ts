@@ -1,5 +1,6 @@
 import lighthouse, { AuditId } from 'lighthouse'
 
+//eslint-disable-next-line @typescript-eslint/no-var-requires
 const chromeLauncher = require('chrome-launcher')
 
 type LighthouseOptions = {
