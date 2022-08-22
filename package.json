@@ -11,6 +11,7 @@
     "build": "tsc",
     "cli": "ts-node src/cli.ts",
     "lint": "eslint . --ext .ts",
+    "prepublish": "yarn build",
     "report": "lighthouse https://www.artmann.co --output=json --output-path report.json",
     "test": "jest --colors --coverage",
     "test:watch": "jest --watchAll"
