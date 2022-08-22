@@ -1,11 +1,11 @@
 {
   "name": "lighthouse-report",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "repository": "https://github.com/artmann/lighthouse-report",
   "author": "Christoffer Artmann",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "bin": "./dist/src/cli.js",
   "scripts": {
     "build": "tsc",
