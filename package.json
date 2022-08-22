@@ -7,9 +7,12 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "cli": "ts-node src/cli.ts"
+    "build": "tsc",
+    "cli": "ts-node src/cli.ts",
+    "report": "lighthouse https://www.artmann.co --output=json --output-path report.json"
   },
   "dependencies": {
+    "chrome-launcher": "^0.15.1",
     "commander": "^9.4.0",
     "lighthouse": "^9.6.6"
   },
