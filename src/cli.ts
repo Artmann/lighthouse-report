@@ -1,28 +1,30 @@
 #!/usr/bin/env node
 
-import { program }  from 'commander'
+import { program } from 'commander'
 
-import { generateLighthouseReportForPage } from '.'
+import { runLighthouseTests } from '.'
 import packageInfo from '../package.json'
 
 async function main() {
-    program.name('lighthouse-report')
+  program.name('lighthouse-report')
     .description('')
     .version(packageInfo.version)
 
-    program.argument('url')
+  program.argument('url')
 
-    program.parse()
+  program.parse()
 
-    const [ url ] = program.args
+  const [ url ] = program.args
 
-    if (!url) {
-        throw new Error('An URL is required.')
-    }
+  if (!url) {
+    throw new Error('An URL is required.')
+  }
 
-    await generateLighthouseReportForPage(url, {
+  const result = await runLighthouseTests(url, {
+    numberOfTests: 2
+  })
 
-    })
+  console.log(result)
 }
 
 main()
