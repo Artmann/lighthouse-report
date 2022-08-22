@@ -5,6 +5,8 @@ const chromeLauncher = require('chrome-launcher')
 
 type LighthouseOptions = {
   numberOfTests: number
+
+  onTestCompleted?: (index: number) => void
 }
 
 interface TestResult {
@@ -36,6 +38,10 @@ export async function runLighthouseTests(url: string, options: LighthouseOptions
       const result = await runLighthouseTest(url, chrome.port)
 
       results.push(result)
+
+      if (options.onTestCompleted) {
+        options.onTestCompleted(i)
+      }
     }
 
     return {
@@ -63,7 +69,7 @@ function average(values: number[]): number {
 
 async function runLighthouseTest(url: string, chromePort: number): Promise<TestResult> {
    const options = {
-      logLevel: 'info',
+      logLevel: 'silent',
       onlyCategories: [ 'performance' ],
       port: chromePort
     }
