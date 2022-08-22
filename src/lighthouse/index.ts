@@ -4,6 +4,8 @@ import lighthouse, { AuditId } from 'lighthouse'
 const chromeLauncher = require('chrome-launcher')
 
 type LighthouseOptions = {
+  isDebugMode: boolean,
+  runHeadless: boolean,
   numberOfTests: number
 
   onTestCompleted?: (index: number) => void
@@ -27,15 +29,19 @@ export interface AggregatedTestResult extends TestResult {
  * Runs a set of lighouse tests sequentially. Returns the aggregated results.
  */
 export async function runLighthouseTests(url: string, options: LighthouseOptions): Promise<AggregatedTestResult> {
-  const chrome = await chromeLauncher.launch({
-    chromeFlags: ['--headless']
-  })
+  const chromeFlags: string[] = []
+
+  if (options.runHeadless) {
+    chromeFlags.push('--headless')
+  }
+
+  const chrome = await chromeLauncher.launch({ chromeFlags })
 
   try {
     const results: TestResult[] = []
 
     for (let i = 0; i < options.numberOfTests; i++) {
-      const result = await runLighthouseTest(url, chrome.port)
+      const result = await runLighthouseTest(url, chrome.port, options)
 
       results.push(result)
 
@@ -67,9 +73,13 @@ function average(values: number[]): number {
   return values.reduce((a, b) => a + b, 0) / values.length
 }
 
-async function runLighthouseTest(url: string, chromePort: number): Promise<TestResult> {
+async function runLighthouseTest(
+  url: string,
+  chromePort: number,
+  userOptions: LighthouseOptions
+): Promise<TestResult> {
    const options = {
-      logLevel: 'silent',
+      logLevel: userOptions.isDebugMode ? 'debug' : 'silent',
       onlyCategories: [ 'performance' ],
       port: chromePort
     }

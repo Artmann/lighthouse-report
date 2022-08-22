@@ -21,8 +21,8 @@
     "chrome-launcher": "^0.15.1",
     "cli-progress": "^3.11.2",
     "cli-table3": "^0.6.2",
-    "commander": "^9.4.0",
-    "lighthouse": "^9.6.6"
+    "lighthouse": "^9.6.6",
+    "meow": "9.0.0"
   },
   "devDependencies": {
     "@types/cli-progress": "^3.11.0",

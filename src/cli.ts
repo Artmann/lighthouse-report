@@ -2,25 +2,40 @@
 
 import chalk from 'chalk'
 import { SingleBar, Presets } from 'cli-progress'
-import { program } from 'commander'
-
+import meow from 'meow'
 
 import { renderReport, runLighthouseTests } from '.'
-import packageInfo from '../package.json'
 
 async function main() {
-  program.name('lighthouse-report')
-    .description('')
-    .version(packageInfo.version)
+  const helpText = `
+    Usage
+      $ lighthouse-report <url>
 
-  program.argument('url')
+    Options
+      --debug   Output debug information.
+      --head    Run in headed mode.
 
-  program.parse()
+    Examples
+      $ lighthouse-report https://www.google.com/
+  `
 
-  const [ url ] = program.args
+  const cli = meow(helpText, {
+    flags: {
+      debug: {
+        type: 'boolean'
+      },
+      head: {
+        type: 'boolean'
+      }
+    }
+  })
+
+  const [ url ] = cli.input
 
   if (!url) {
-    throw new Error('An URL is required.')
+    console.log(helpText)
+
+    process.exit(1)
   }
 
   console.log(
@@ -34,7 +49,10 @@ async function main() {
   bar.start(3, 0)
 
   const result = await runLighthouseTests(url, {
+    isDebugMode: cli.flags.debug ?? false,
     numberOfTests: 3,
+    runHeadless: !cli.flags.head,
+
     onTestCompleted: () => {
       bar.increment()
     }

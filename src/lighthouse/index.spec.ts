@@ -12,6 +12,12 @@ jest.mock('lighthouse', () => lighouseMock)
 import { Audit, AuditId } from 'lighthouse'
 import { runLighthouseTests } from '.'
 
+const options = {
+  isDebugMode: false,
+  numberOfTests: 3,
+  runHeadless: true
+}
+
 describe('runLighthouseTests', () => {
   beforeEach(() => {
     lighouseMock.mockResolvedValue({
@@ -30,7 +36,7 @@ describe('runLighthouseTests', () => {
   })
 
   it('runs the given number of tests.', async() => {
-    await runLighthouseTests('https://example.com', { numberOfTests: 3 })
+    await runLighthouseTests('https://example.com', options)
 
     expect(lighouseMock).toHaveBeenCalledTimes(3)
   })
@@ -64,7 +70,10 @@ describe('runLighthouseTests', () => {
       }
     })
 
-    const result = await runLighthouseTests('https://example.com', { numberOfTests: 2 })
+    const result = await runLighthouseTests('https://example.com', {
+      ...options,
+      numberOfTests: 2
+    })
 
     expect(result).toEqual({
       cumulativeLayoutShift: 10.5,
@@ -98,7 +107,7 @@ describe('runLighthouseTests', () => {
   })
 
   it('shuts down the browser.', async() => {
-    await runLighthouseTests('https://example.com', { numberOfTests: 3 })
+    await runLighthouseTests('https://example.com', options)
 
     expect(killMock).toHaveBeenCalled()
   })
