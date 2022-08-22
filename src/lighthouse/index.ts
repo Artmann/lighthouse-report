@@ -17,7 +17,9 @@ interface TestResult {
   totalBlockingTime: number
 }
 
-export interface AggregatedTestResult extends TestResult {}
+export interface AggregatedTestResult extends TestResult {
+  testResults: TestResult[]
+}
 
 /**
  * Runs a set of lighouse tests sequentially. Returns the aggregated results.
@@ -43,7 +45,8 @@ export async function runLighthouseTests(url: string, options: LighthouseOptions
       timeToInteractive: average(results.map(result => result.timeToInteractive)),
       largestContentfulPaint: average(results.map(result => result.largestContentfulPaint)),
       speedIndex: average(results.map(result => result.speedIndex)),
-      totalBlockingTime: average(results.map(result => result.totalBlockingTime))
+      totalBlockingTime: average(results.map(result => result.totalBlockingTime)),
+      testResults: results
     }
   } finally {
     await chrome.kill()
@@ -72,18 +75,18 @@ async function runLighthouseTest(url: string, chromePort: number): Promise<TestR
 
     const getAuditValue = (id: AuditId): number => {
       const audit = result.lhr.audits[id]
-      
+
       if (audit.numericUnit === 'unitless') {
         return audit.numericValue
       }
-      
+
       if (audit.numericUnit === 'millisecond') {
         return audit.numericValue / 1000
       }
 
       return audit.numericValue
     }
-    
+
     return {
       cumulativeLayoutShift: getAuditValue('cumulative-layout-shift'),
       firstContentfulPaint: getAuditValue('first-contentful-paint'),

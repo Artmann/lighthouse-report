@@ -35,7 +35,7 @@ describe('runLighthouseTests', () => {
     expect(lighouseMock).toHaveBeenCalledTimes(3)
   })
 
-  it ('aggregates the results using an average function.', async() => {
+  it('aggregates the results using an average function.', async() => {
     lighouseMock.mockResolvedValueOnce({
       lhr: {
         audits: {
@@ -65,14 +65,34 @@ describe('runLighthouseTests', () => {
     })
 
     const result = await runLighthouseTests('https://example.com', { numberOfTests: 2 })
-  
+
     expect(result).toEqual({
       cumulativeLayoutShift: 10.5,
       firstContentfulPaint: 21,
       firstMeaningfulPaint: 31.5,
-      timeToInteractive: 42,
       largestContentfulPaint: 52.5,
       speedIndex: 63,
+      testResults: [
+        {
+          cumulativeLayoutShift: 10,
+          firstContentfulPaint: 20,
+          firstMeaningfulPaint: 30,
+          largestContentfulPaint: 50,
+          speedIndex: 60,
+          timeToInteractive: 40,
+          totalBlockingTime: 70
+        },
+        {
+          cumulativeLayoutShift: 11,
+          firstContentfulPaint: 22,
+          firstMeaningfulPaint: 33,
+          largestContentfulPaint: 55,
+          speedIndex: 66,
+          timeToInteractive: 44,
+          totalBlockingTime: 77
+        }
+      ],
+      timeToInteractive: 42,
       totalBlockingTime: 73.5
     })
   })
@@ -95,4 +115,4 @@ function createMockAudit(id: AuditId, value = 0, score = 0): Audit {
     numericUnit: '',
     numericValue: value || 0,
   }
-} 
+}

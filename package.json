@@ -15,7 +15,9 @@
     "test:watch": "jest --watchAll"
   },
   "dependencies": {
+    "chalk": "4.1.2",
     "chrome-launcher": "^0.15.1",
+    "cli-table3": "^0.6.2",
     "commander": "^9.4.0",
     "lighthouse": "^9.6.6"
   },

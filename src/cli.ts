@@ -2,7 +2,7 @@
 
 import { program } from 'commander'
 
-import { runLighthouseTests } from '.'
+import { renderReport, runLighthouseTests } from '.'
 import packageInfo from '../package.json'
 
 async function main() {
@@ -21,11 +21,10 @@ async function main() {
   }
 
   const result = await runLighthouseTests(url, {
-    numberOfTests: 2
+    numberOfTests: 3
   })
 
-  console.log(result)
+  renderReport(result)
 }
 
 main()
-
