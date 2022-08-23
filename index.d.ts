@@ -10,7 +10,7 @@ declare module 'lighthouse' {
     onlyCategories: string[],
     port: number
   }
-  
+
   type Audit = {
     description: string
     displayValue: string
@@ -46,4 +46,15 @@ declare module 'lighthouse' {
     name: string
     startTime: number
   }
+}
+
+declare module 'lighthouse/lighthouse-core/config/desktop-config' {
+  const config: any
+
+  export default config
+}
+declare module 'lighthouse/lighthouse-core/config/lr-mobile-config' {
+  const config: any
+
+  export default config
 }

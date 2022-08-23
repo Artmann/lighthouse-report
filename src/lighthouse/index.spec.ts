@@ -14,6 +14,7 @@ import { runLighthouseTests } from '.'
 
 const options = {
   isDebugMode: false,
+  isMobile: true,
   numberOfTests: 3,
   runHeadless: true
 }
