@@ -7,6 +7,9 @@
   "license": "MIT",
   "private": false,
   "bin": "./dist/src/cli.js",
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "build": "tsc",
     "cli": "ts-node src/cli.ts",
