@@ -1,11 +1,14 @@
 import lighthouse, { AuditId } from 'lighthouse'
+import desktopConfig from 'lighthouse/lighthouse-core/config/desktop-config'
+import mobileConfig from 'lighthouse/lighthouse-core/config/lr-mobile-config'
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires
 const chromeLauncher = require('chrome-launcher')
 
 type LighthouseOptions = {
-  isDebugMode: boolean,
-  runHeadless: boolean,
+  isDebugMode: boolean
+  isMobile: boolean
+  runHeadless: boolean
   numberOfTests: number
 
   onTestCompleted?: (index: number) => void
@@ -83,9 +86,7 @@ async function runLighthouseTest(
       onlyCategories: [ 'performance' ],
       port: chromePort
     }
-    const settings = {
-      extends: 'lighthouse:default'
-    }
+    const settings = userOptions.isMobile ? mobileConfig : desktopConfig
 
     const result = await lighthouse(url, options, settings)
 

@@ -12,9 +12,11 @@ async function main() {
       $ lighthouse-report <url>
 
     Options
-      --debug        Output debug information.
-      --head         Run in headed mode.
-      --number, -n   Number of tests to run. Defaults to 3.
+      --debug         Output debug information.
+      --desktop, -d   Run in desktop mode.
+      --head          Run in headed mode.
+      --mobile, -m   Run in mobile mode. This is the default mode.
+      --number, -n    Number of tests to run. Defaults to 3.
 
     Examples
       $ lighthouse-report https://www.google.com/
@@ -25,7 +27,15 @@ async function main() {
       debug: {
         type: 'boolean'
       },
+      desktop: {
+        alias: 'd',
+        type: 'boolean'
+      },
       head: {
+        type: 'boolean'
+      },
+      mobile: {
+        alias: 'm',
         type: 'boolean'
       },
       number: {
@@ -34,7 +44,6 @@ async function main() {
       }
     }
   })
-  console.log(cli.flags)
 
   const [ url ] = cli.input
 
@@ -56,7 +65,20 @@ async function main() {
 
   bar.start(numberOfTests, 0)
 
+  const isMobile = (): boolean => {
+    if (cli.flags.mobile) {
+      return true
+    }
+
+    if (cli.flags.desktop) {
+      return false
+    }
+
+    return true
+  }
+
   const result = await runLighthouseTests(url, {
+    isMobile: isMobile(),
     isDebugMode: cli.flags.debug ?? false,
     numberOfTests,
     runHeadless: !cli.flags.head,
