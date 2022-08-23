@@ -56,7 +56,7 @@ async function main() {
   const numberOfTests = cli.flags.number ?? 3
 
   console.log(
-    chalk.bold(`Running lighthouse tests for ${ url }. \n`)
+    chalk.bold(`\nRunning Lighthouse tests for ${ url }. \n`)
   )
 
   const bar = new SingleBar({
